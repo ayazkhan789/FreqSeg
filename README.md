@@ -1,4 +1,2 @@
-# Dual-Pattern Learning for Fire–Smoke Instance Segmentation with a Large-Scale Dataset
-
-
-
+# FreqSeg: Physics-Informed Frequency Decomposition for Fire and
+Smoke Instance Segmentation
