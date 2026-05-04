@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="FreqSeg: Physics-Informed Frequency Decomposition for Fire and Smoke Instance Segmentation.">
-  <meta property="og:title" content="Dual-Pattern Learning for Fire–Smoke Instance Segmentation"/>
-  <meta property="og:description" content="A novel instance segmentation framework that separates fire and smoke via a Dual-Pattern Encoder and Adaptive Fusion Module, achieving 40.2% AP at 17.2 FPS."/>
+  <meta name="description" content="FreqSeg: A Physics-Informed Frequency-Decomposed Network for Fire and Smoke Instance Segmentation.">
+  <meta property="og:title" content="FreqSeg: Physics-Informed Frequency Decomposition for Fire and Smoke Instance Segmentation"/>
+  <meta property="og:description" content="A novel instance segmentation framework using a Frequency-Decomposed Encoder and Adaptive Fusion Module to separate fire and smoke representations, achieving 40.2% AP at 17.2 FPS."/>
   <meta property="og:image" content="https://drive.google.com/thumbnail?id=1au9M5lQ1Pcfl6VoqWJI_oiWzxQ-GAOpI&sz=w1200"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="keywords" content="fire detection, smoke detection, instance segmentation, deep learning, DPAF-Net, dual-pattern encoder, adaptive fusion">
+  <meta name="keywords" content="fire detection, smoke detection, instance segmentation, deep learning, FreqSeg, frequency decomposition, frequency-decomposed encoder, adaptive fusion, physics-informed">
 
-  <title>Fire &amp; Smoke Instance Segmentation</title>
+  <title>FreqSeg: Fire &amp; Smoke Instance Segmentation</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="static/css/bulma.min.css">
@@ -317,7 +317,7 @@
           <div class="venue-badge">Pattern Recognition &nbsp;&middot;&nbsp; Elsevier &nbsp;&middot;&nbsp; 2026</div>
 
           <h1 class="title is-2 publication-title" style="margin-top:0.6rem;">
-            DPAF-Net: Dual-Pattern Learning for Fire&ndash;Smoke Instance Segmentation<br>with a Large-Scale Dataset
+            FreqSeg: A Physics-Informed Frequency-Decomposed Network for Fire and Smoke Instance Segmentation
           </h1>
 
           <div class="is-size-5 publication-authors" style="margin-top:1rem;">
@@ -363,10 +363,11 @@
           </div>
 
           <div class="tldr-box">
-            DPAF-Net explicitly separates fire (high-freq 3&times;3 kernels) and smoke
-            (low-freq 5&times;5/7&times;7 kernels) via a Dual-Pattern Encoder, fuses them with pixel-wise
-            softmax attention, and achieves <b>40.2% AP at 17.2 FPS</b> on a new 7,917-image
-            dual-class dataset &mdash; the largest instance-level fire &amp; smoke benchmark to date.
+            FreqSeg introduces a <b>Frequency-Decomposed Encoder (FDE)</b> that applies class-specific multi-scale kernels
+            to separately capture high-frequency fire structure and low-frequency smoke diffusion, fuses them via an
+            <b>Adaptive Fusion Module (AFM)</b> with channel and spatial attention, and achieves
+            <b>40.2% AP at 17.2 FPS</b> on a new 7,917-image dual-class dataset &mdash;
+            the largest instance-level fire &amp; smoke benchmark to date.
           </div>
 
         </div>
@@ -383,19 +384,26 @@
         <h2 class="title is-3 section-heading">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Reliable and real-time detection of fire and smoke is essential for mitigating risks to human life and infrastructure,
-            particularly under complex real-world conditions. Existing segmentation methods rely on shared feature representations
-            that conflate fire's high-frequency textures and  smoke's diffuse, semi-transparent structures, while semantic approaches 
-            lack instance-level discrimination and datasets remain limited to single-class annotations.                
-            We introduce <b>DPAF-Net</b>, a novel instance segmentation framework built on three components:
-            a <b>Dual-Pattern Encoder (DPE)</b> with fire-specific 3&times;3 kernels and smoke-specific large-kernel
-            convolutions (5&times;5, 7&times;7) for complementary feature extraction; an <b>Adaptive Fusion Module (AFM)</b>
-            with pixel-wise softmax attention to dynamically weight fire and smoke features per spatial location;
-            and a <b>DCNv2-enhanced ResNet-50 backbone</b> for adaptive modeling of irregular boundaries.                
-            DPAF-Net achieves <b>40.2% AP at 17.2 FPS</b>, outperforming the best baseline by +5.2% AP, with
-            strong boundary precision (AP<sub>75</sub>: 40.0%), small-object detection (AP<sub>S</sub>: 30.4%),
-            and a mean AP of 45.1%. We further release a large-scale dataset of <b>7,917 images</b> with dual-class
-            instance-level annotations across diverse real-world environments.
+            Fire and smoke detection in real-world environments poses significant challenges for instance segmentation due
+            to the physically distinct appearance of the two hazard classes: fire exhibits sharp, high-frequency boundary
+            patterns driven by combustion dynamics, whereas smoke manifests as diffuse, low-frequency gradients that vary
+            with atmospheric conditions, scale, and scene illumination. Existing methods apply uniform feature extraction
+            to both classes, failing to exploit these frequency-domain differences and consequently producing imprecise
+            instance masks under complex real-world conditions. To address these limitations, we propose
+            <b>FreqSeg</b>, a physics-informed frequency decomposition network that introduces two complementary
+            components: a <b>Frequency-Decomposed Encoder (FDE)</b>, which applies class-specific multi-scale
+            convolution kernels to independently capture the high-frequency spatial structure of fire and the
+            low-frequency diffusion patterns of smoke, and an <b>Adaptive Fusion Module (AFM)</b>, which dynamically
+            recalibrates and integrates the resulting dual-pattern features through channel and spatial attention.
+            To support training and evaluation, we introduce a large-scale dual-class instance segmentation dataset
+            comprising <b>7,917 polygon-annotated images</b> spanning indoor, outdoor, nighttime, daytime, and UAV
+            perspectives, representing the most comprehensive benchmark for fire and smoke instance segmentation to
+            date. Extensive experiments demonstrate that FreqSeg achieves <b>40.2% mask AP</b>, surpassing PointRend
+            by +5.2%, Mask2Former by +5.4%, and CondInst by +6.0%, while operating at <b>17.2 FPS</b>. Furthermore,
+            zero-shot cross-dataset evaluation on three external benchmarks yields a mean AP of 34.4%, outperforming
+            all five state-of-the-art competitors including Mask2Former with a stronger Swin-Tiny backbone by +2.3%,
+            confirming that physics-informed dual-pattern encoding produces transferable representations that generalise
+            reliably to unseen fire and smoke domains.
           </p>
         </div>
       </div>
@@ -411,29 +419,29 @@
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-fire"></i></div>
-          <h4>Dual-Pattern Encoder</h4>
-          <p>Separates fire (3&times;3) and smoke (5&times;5, 7&times;7) representations across all FPN levels via parallel branches.</p>
+          <h4>Frequency-Decomposed Encoder</h4>
+          <p>Applies class-specific multi-scale kernels to independently capture high-frequency fire structure and low-frequency smoke diffusion patterns across all FPN levels.</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-layer-group"></i></div>
           <h4>Adaptive Fusion Module</h4>
-          <p>Pixel-wise softmax attention dynamically integrates complementary fire and smoke features per spatial location.</p>
+          <p>Dynamically recalibrates and integrates dual-pattern features through channel and spatial attention for superior instance-level discrimination.</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-tachometer-alt"></i></div>
           <h4>40.2% AP &middot; 17.2 FPS</h4>
-          <p>+5.2% AP over the best baseline with real-time throughput on a single NVIDIA RTX 4090.</p>
+          <p>+5.2% AP over PointRend, +5.4% over Mask2Former, +6.0% over CondInst with real-time throughput on a single GPU.</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-expand-arrows-alt"></i></div>
-          <h4>DCNv2 Backbone</h4>
-          <p>Deformable ResNet-50 (Stages 2&ndash;4) adapts receptive fields to irregular flame and smoke boundaries.</p>
+          <h4>Physics-Informed Design</h4>
+          <p>Frequency-domain decomposition guided by the physical properties of fire (combustion dynamics) and smoke (atmospheric diffusion) for principled feature separation.</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
@@ -446,8 +454,8 @@
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-search"></i></div>
-          <h4>Instance-Level Precision</h4>
-          <p>Counts and delineates individual fire seats and smoke plumes &mdash; impossible with semantic methods.</p>
+          <h4>Zero-Shot Generalization</h4>
+          <p>Mean AP of 34.4% on three unseen external benchmarks &mdash; outperforming all five state-of-the-art competitors without any fine-tuning.</p>
         </div>
       </div>
     </div>
@@ -469,16 +477,16 @@
       <div class="arch-split">
         <div class="arch-branch arch-branch-fire">
           <div class="arch-branch-label">Fire Branch</div>
-          3&times;3 kernels<br><small>High-freq textures, sharp edges</small>
+          Small-kernel convolutions<br><small>High-freq textures &amp; sharp boundaries</small>
         </div>
-        <div class="arch-branch-label-mid">DPE</div>
+        <div class="arch-branch-label-mid">FDE</div>
         <div class="arch-branch arch-branch-smoke">
           <div class="arch-branch-label">Smoke Branch</div>
-          5&times;5 / 7&times;7 kernels<br><small>Low-freq diffuse patterns</small>
+          Large-kernel convolutions<br><small>Low-freq diffuse &amp; gradient patterns</small>
         </div>
       </div>
       <div class="arch-arrow">&#9660;</div>
-      <div class="arch-block arch-block-afm">Adaptive Fusion Module (AFM)<br><small>3-Stage Spatial Attention &middot; Pixel-wise Softmax</small></div>
+      <div class="arch-block arch-block-afm">Adaptive Fusion Module (AFM)<br><small>Channel &amp; Spatial Attention &middot; Dynamic Recalibration</small></div>
       <div class="arch-arrow">&#9660;</div>
       <div class="arch-block arch-block-head">CondInst Dynamic Mask Head<br><small>169 dynamic parameters per instance</small></div>
       <div class="arch-arrow">&#9660;</div>
@@ -487,15 +495,15 @@
 
     <div class="content has-text-justified" style="margin-top:2rem;">
       <p>
-        The <b>Dual-Pattern Encoder (DPE)</b> processes FPN features through two parallel branches: a fire branch
-        employing 3&times;3 convolutions to capture high-frequency textures and color gradients, and a smoke branch using
-        large-kernel convolutions (5&times;5, 7&times;7) to model low-frequency, dispersed, semi-transparent patterns.
-        Both branches include Pattern-Specific Channel Attention (PSCA) for per-branch recalibration (256&rarr;16&rarr;256, r=16).
+        The <b>Frequency-Decomposed Encoder (FDE)</b> processes FPN features through two parallel branches: a fire branch
+        employing small-kernel convolutions to capture high-frequency textures and sharp combustion boundaries, and a smoke branch
+        using large-kernel convolutions to model low-frequency, diffuse, and semi-transparent gradient patterns.
+        Both branches independently extract class-specific representations guided by the physical frequency characteristics of each hazard.
       </p>
       <p>
-        The <b>Adaptive Fusion Module (AFM)</b> applies a 3-stage spatial attention mechanism that generates
-        pixel-wise fusion weights via softmax normalization, enabling the network to adaptively emphasize fire or
-        smoke features at each spatial location &mdash; particularly effective in scenes where both classes coexist or overlap.
+        The <b>Adaptive Fusion Module (AFM)</b> dynamically recalibrates and integrates the resulting dual-pattern features
+        through channel and spatial attention, enabling the network to emphasize the most informative frequency patterns
+        at each spatial location &mdash; particularly effective in scenes where fire and smoke coexist or overlap.
       </p>
     </div>
   </div>
@@ -555,7 +563,7 @@
           <tr><td>FLAME</td><td>2,003</td><td>&#10003;</td><td></td><td>Binary</td><td>Semantic</td><td>2023</td></tr>
           <tr><td>IoT-Fire</td><td>11,000</td><td>&#10003;</td><td></td><td>Binary</td><td>Semantic</td><td>2023</td></tr>
           <tr class="dpaf-best-row">
-            <td><b>Ours (DPAF-Net)</b></td><td><b>7,917</b></td><td><b>&#10003;</b></td><td><b>&#10003;</b></td>
+            <td><b>Ours (FreqSeg)</b></td><td><b>7,917</b></td><td><b>&#10003;</b></td><td><b>&#10003;</b></td>
             <td><b>Polygon</b></td><td><b>Instance</b></td><td><b>2026</b></td>
           </tr>
         </tbody>
@@ -564,7 +572,7 @@
 
     <!-- Visual Results on Different Conditions -->
     <h3 class="title is-5 has-text-centered" style="margin-top:2.5rem; color:#fff;">
-      DPAF-Net Visual Results &mdash; Diverse Conditions &amp; Scenarios
+      FreqSeg Visual Results &mdash; Diverse Conditions &amp; Scenarios
     </h3>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:1.5rem; font-size:0.95rem;">
       Our model predictions across industrial, indoor, wildfire, vehicle, and complex scenes
@@ -627,8 +635,8 @@
       <div class="column is-full">
         <figure class="image result-figure">
           <img src="https://drive.google.com/thumbnail?id=1VzUnWZQqyigWpAey93B7UlmCD6A598JW&sz=w1200"
-               alt="DPAF-Net predictions vs ground truth (fire)">
-          <figcaption>DPAF-Net achieves superior boundary precision and complete instance
+               alt="FreqSeg predictions vs ground truth (fire)">
+          <figcaption>FreqSeg achieves superior boundary precision and complete instance
 coverage across scales for fire and smoke.</figcaption>
         </figure>
       </div>
@@ -646,7 +654,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
         <figure class="image result-figure">
           <img src="https://drive.google.com/thumbnail?id=1R-QkcBdAWIo1o061uMhPST6SHVBiaJcI&sz=w1200"
                alt="All models on full dataset">
-          <figcaption>DPAF-Net predictions vs. ground truth &mdash; fire instances. Our model accurately delineates individual flame regions under varying scale, illumination, and background complexity</figcaption>
+          <figcaption>FreqSeg predictions vs. ground truth &mdash; fire instances. Our model accurately delineates individual flame regions under varying scale, illumination, and background complexity</figcaption>
         </figure>
       </div>
 
@@ -659,7 +667,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered" style="color:#fff;">Video Demos</h2>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:2rem;">
-      Input video (left) &nbsp;vs.&nbsp; DPAF-Net segmentation output (right)
+      Input video (left) &nbsp;vs.&nbsp; FreqSeg segmentation output (right)
     </p>
 
     <div id="video-carousel" class="carousel results-carousel">
@@ -673,7 +681,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
           <div class="column">
-            <p class="video-label output-label">DPAF-Net Output</p>
+            <p class="video-label output-label">FreqSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1SMHOK1KwDKlFXVXgePYpN8eOcZw7M2t6/preview"
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
@@ -689,7 +697,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
           <div class="column">
-            <p class="video-label output-label">DPAF-Net Output</p>
+            <p class="video-label output-label">FreqSeg Output</p>
             <iframe src="https://drive.google.com/file/d/16hh5PfnkpB1hGNFOMEkmbBH5ZRHhPeWh/preview"
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
@@ -705,7 +713,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
           <div class="column">
-            <p class="video-label output-label">DPAF-Net Output</p>
+            <p class="video-label output-label">FreqSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1_Flg3KBc33vS6and6uVEAdM0k2kS1gMG/preview"
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
@@ -721,7 +729,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
           <div class="column">
-            <p class="video-label output-label">DPAF-Net Output</p>
+            <p class="video-label output-label">FreqSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1p-Voctv8D9DXPym2RUCBN7TlpqYsaZb6/preview"
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
@@ -739,7 +747,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
           <div class="column">
-            <p class="video-label output-label">DPAF-Net Output</p>
+            <p class="video-label output-label">FreqSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1buoWPnW89iB2EfP4CgJgXc-lT4HdmtJl/preview"
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
@@ -755,7 +763,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
           <div class="column">
-            <p class="video-label output-label">DPAF-Net Output</p>
+            <p class="video-label output-label">FreqSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1QSC6svdXSDsGjznxOAvRC4_uwWy9OMe0/preview"
               width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
@@ -774,11 +782,10 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
     <h2 class="title is-3 section-heading has-text-centered" style="color:#fff;">Citation</h2>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:1.5rem;">If you find this work useful, please cite:</p>
     <div class="bibtex-box">
-      <pre><code>@article{ayaz2026dpafnet,
-  title   = {DPAF-Net: Dual-Pattern Learning for Fire--Smoke Instance
-             Segmentation with a Large-Scale Dataset},
-  author  = {Ayaz,Amin, Sareer ul and Yar Hikmat
-             and Khan Salman and Shin Wonseop and Seo Sanghyun},
+      <pre><code>@article{ayaz2026freqseg,
+  title   = {FreqSeg: A Physics-Informed Frequency-Decomposed Network for Fire and Smoke Instance Segmentation},
+  author  = {Ayaz, Muhammad and Amin, Sareer ul and Yar, Hikmat
+             and Khan, Salman and Shin, Wonseop and Seo, Sanghyun},
  
 </code></pre>
     </div>
@@ -792,7 +799,7 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
       <div class="column is-8">
         <div class="content has-text-centered" style="color:#aaa;">
           <p>
-            <b style="color:#fff;">DPAF-Net</b> &nbsp;&middot;&nbsp; Pattern Recognition, Elsevier &nbsp;&middot;&nbsp; 2026<br>
+            <b style="color:#fff;">FreqSeg</b> &nbsp;&middot;&nbsp; Pattern Recognition, Elsevier &nbsp;&middot;&nbsp; 2026<br>
             Chung-Ang University &nbsp;|&nbsp; KAIST &nbsp;|&nbsp; Oxford Brookes University
           </p>
           <p>
@@ -801,7 +808,6 @@ fine-tuning, showing robustness to diverse conditions and scales.</figcaption>
               Academic Project Page Template</a>.
             Licensed under
             <a rel="license" href="http://creativecommons.org/licens
-
 
 
 
