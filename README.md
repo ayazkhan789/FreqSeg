@@ -1,1 +1,2 @@
-# FreqSeg: Physics-Informed Frequency Decomposition for Fire and Smoke Instance Segmentation
+# Physics-Informed Multi-Scale Pattern Encoding for Fire and Smoke
+Segmentation
