@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="FreqSeg: A Physics-Informed Frequency-Decomposed Network for Fire and Smoke Instance Segmentation.">
-  <meta property="og:title" content="FreqSeg: Physics-Informed Frequency Decomposition for Fire and Smoke Instance Segmentation"/>
-  <meta property="og:description" content="A novel instance segmentation framework using a Frequency-Decomposed Encoder and Adaptive Fusion Module to separate fire and smoke representations, achieving 40.2% AP at 17.2 FPS."/>
+  <meta name="description" content="PhysSeg: Physics-Informed Multi-Scale Pattern Encoding for Fire and Smoke Instance Segmentation.">
+  <meta property="og:title" content="PhysSeg: Physics-Informed Multi-Scale Pattern Encoding for Fire and Smoke Instance Segmentation"/>
+  <meta property="og:description" content="An end-to-end physics-informed instance segmentation framework using a Multi-Scale Pattern Encoder and Adaptive Fusion Module, achieving 40.2% AP at 17.2 FPS."/>
   <meta property="og:image" content="https://drive.google.com/thumbnail?id=1au9M5lQ1Pcfl6VoqWJI_oiWzxQ-GAOpI&sz=w1200"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="keywords" content="fire detection, smoke detection, instance segmentation, deep learning, FreqSeg, frequency decomposition, frequency-decomposed encoder, adaptive fusion, physics-informed">
-
-  <title>FreqSeg: Fire &amp; Smoke Instance Segmentation</title>
+  <meta name="keywords" content="fire detection, smoke detection, instance segmentation, deep learning, PhysSeg, multi-scale pattern encoding, adaptive fusion, physics-informed">
+  <title>PhysSeg: Fire &amp; Smoke Instance Segmentation</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="static/css/bulma.min.css">
@@ -26,267 +25,77 @@
   <script src="static/js/index.js"></script>
 
   <style>
-    /* ===== GLOBAL MOBILE FIXES ===== */
     * { box-sizing: border-box; }
+    html, body { overflow-x: hidden; width: 100%; }
 
-    html, body {
-      overflow-x: hidden;
+    /* ── MOBILE ─────────────────────────────────────────────────── */
+    @media screen and (max-width: 768px) {
+      .navbar-menu { display:block!important; background:#111; padding:.5rem 0; }
+      .navbar-start { flex-direction:column; }
+      .navbar-item.has-dropdown { width:100%; }
+      .navbar-link { width:100%; display:block; padding:.75rem 1rem; }
+      .navbar-dropdown { position:static!important; display:block!important; background:#1a1a1a!important; box-shadow:none; padding:0; }
+      .navbar-dropdown .navbar-item { padding:.5rem 1.5rem; font-size:.85rem; }
+      .publication-title { font-size:1.4rem!important; line-height:1.4!important; }
+      .is-size-5.publication-authors { font-size:.95rem!important; }
+      .is-size-6.publication-authors { font-size:.8rem!important; }
+      .venue-badge { font-size:.75rem!important; padding:.3rem .8rem!important; }
+      .tldr-box { font-size:.9rem!important; padding:1rem!important; margin:1rem .5rem 0!important; text-align:left; }
+      .publication-links { display:flex; flex-wrap:wrap; justify-content:center; gap:.5rem; }
+      .title.is-3.section-heading { font-size:1.4rem!important; }
+      .section { padding:2rem 1rem!important; }
+      .highlight-grid .column { width:100%!important; padding:.4rem!important; }
+      .highlight-card { padding:1rem!important; font-size:.9rem!important; }
+      .dataset-stats { flex-wrap:wrap!important; }
+      .dataset-stats .column { width:50%!important; padding:.4rem!important; }
+      .stat-number { font-size:1.5rem!important; }
+      .stat-card { padding:.75rem .5rem!important; margin:.25rem!important; }
+      .table-container { overflow-x:auto!important; -webkit-overflow-scrolling:touch; }
+      .dpaf-table { font-size:.75rem!important; min-width:500px; }
+      .dpaf-table th, .dpaf-table td { padding:.4rem .5rem!important; white-space:nowrap; }
+      .bibtex-box { font-size:.75rem!important; padding:1rem!important; overflow-x:auto; }
+      .bibtex-box pre { white-space:pre-wrap!important; word-break:break-word!important; }
+      footer .content p { font-size:.8rem!important; }
+      .video-pair { flex-direction:column!important; }
+      .video-pair .column { width:100%!important; padding:.25rem 0!important; }
+      .video-pair iframe { height:220px!important; width:100%!important; }
+    }
+
+    @media screen and (min-width:769px) and (max-width:1023px) {
+      .publication-title { font-size:1.6rem!important; }
+      .video-pair iframe { height:280px!important; }
+      .dpaf-table { font-size:.85rem!important; }
+    }
+
+    /* ── ARCHITECTURE IMAGE ────────────────────────────────────── */
+    .arch-image-wrapper {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      margin: 0 auto;
+      max-width: 900px;
+    }
+    .arch-image-wrapper img {
       width: 100%;
+      height: auto;
+      display: block;
     }
-
-    /* ===== NAVBAR MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .navbar-menu {
-        display: block !important;
-        background: #111;
-        padding: 0.5rem 0;
-      }
-      .navbar-start {
-        flex-direction: column;
-      }
-      .navbar-item.has-dropdown {
-        width: 100%;
-      }
-      .navbar-link {
-        width: 100%;
-        display: block;
-        padding: 0.75rem 1rem;
-      }
-      .navbar-dropdown {
-        position: static !important;
-        display: block !important;
-        background: #1a1a1a !important;
-        box-shadow: none;
-        padding: 0;
-      }
-      .navbar-dropdown .navbar-item {
-        padding: 0.5rem 1.5rem;
-        font-size: 0.85rem;
-      }
-    }
-
-    /* ===== HERO / TITLE MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .publication-title {
-        font-size: 1.4rem !important;
-        line-height: 1.4 !important;
-      }
-      .is-size-5.publication-authors {
-        font-size: 0.95rem !important;
-      }
-      .is-size-6.publication-authors {
-        font-size: 0.8rem !important;
-      }
-      .venue-badge {
-        font-size: 0.75rem !important;
-        padding: 0.3rem 0.8rem !important;
-      }
-      .tldr-box {
-        font-size: 0.9rem !important;
-        padding: 1rem !important;
-        margin: 1rem 0.5rem 0 !important;
-        text-align: left;
-      }
-      .publication-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.5rem;
-      }
-      .publication-links .link-block {
-        margin: 0 !important;
-      }
-    }
-
-    /* ===== SECTION HEADINGS MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .title.is-3.section-heading {
-        font-size: 1.4rem !important;
-      }
-      .title.is-5 {
-        font-size: 1rem !important;
-      }
-      .section {
-        padding: 2rem 1rem !important;
-      }
-    }
-
-    /* ===== HIGHLIGHT CARDS MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .highlight-grid .column {
-        width: 100% !important;
-        padding: 0.4rem !important;
-      }
-      .highlight-card {
-        padding: 1rem !important;
-        font-size: 0.9rem !important;
-      }
-      .highlight-icon {
-        font-size: 1.5rem !important;
-      }
-    }
-
-    /* ===== ARCHITECTURE PIPELINE MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .arch-pipeline {
-        padding: 0 0.5rem;
-      }
-      .arch-block {
-        font-size: 0.8rem !important;
-        padding: 0.6rem 0.8rem !important;
-        margin: 0 auto 0 auto !important;
-        width: 95% !important;
-      }
-      .arch-split {
-        flex-direction: column !important;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      .arch-branch {
-        width: 90% !important;
-        font-size: 0.8rem !important;
-        padding: 0.6rem !important;
-      }
-      .arch-branch-label-mid {
-        font-size: 0.9rem !important;
-        padding: 0.3rem 0.8rem !important;
-      }
-      .arch-arrow {
-        font-size: 0.9rem !important;
-      }
-    }
-
-    /* ===== DATASET STATS MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .dataset-stats {
-        flex-wrap: wrap !important;
-      }
-      .dataset-stats .column {
-        width: 50% !important;
-        padding: 0.4rem !important;
-      }
-      .stat-number {
-        font-size: 1.5rem !important;
-      }
-      .stat-label {
-        font-size: 0.75rem !important;
-      }
-      .stat-card {
-        padding: 0.75rem 0.5rem !important;
-        margin: 0.25rem !important;
-      }
-    }
-
-    /* ===== DATASET / RESULT FIGURES MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .columns.is-multiline .column.is-half,
-      .columns.is-multiline .column.is-one-third,
-      .columns.is-multiline .column.is-full {
-        width: 100% !important;
-        padding: 0.5rem 0 !important;
-      }
-      .dataset-figure,
-      .result-figure {
-        margin-bottom: 1rem !important;
-      }
-      .dataset-figure img,
-      .result-figure img {
-        border-radius: 6px;
-        width: 100%;
-        height: auto;
-      }
-      .dataset-figure figcaption,
-      .result-figure figcaption {
-        font-size: 0.8rem !important;
-        padding: 0.4rem 0 !important;
-      }
-    }
-
-    /* ===== VIDEO CAROUSEL MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .video-pair {
-        flex-direction: column !important;
-      }
-      .video-pair .column {
-        width: 100% !important;
-        padding: 0.25rem 0 !important;
-      }
-      .video-pair iframe {
-        height: 220px !important;
-        width: 100% !important;
-      }
-      .video-label {
-        font-size: 0.8rem !important;
-        margin-bottom: 0.25rem !important;
-      }
-      #video-carousel .item {
-        padding: 0.5rem !important;
-      }
-    }
-
-    /* ===== TABLES MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .table-container {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-      }
-      .dpaf-table {
-        font-size: 0.75rem !important;
-        min-width: 500px;
-      }
-      .dpaf-table th,
-      .dpaf-table td {
-        padding: 0.4rem 0.5rem !important;
-        white-space: nowrap;
-      }
-    }
-
-    /* ===== CITATION / BIBTEX MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      .bibtex-box {
-        font-size: 0.75rem !important;
-        padding: 1rem !important;
-        overflow-x: auto;
-      }
-      .bibtex-box pre {
-        white-space: pre-wrap !important;
-        word-break: break-word !important;
-      }
-    }
-
-    /* ===== FOOTER MOBILE ===== */
-    @media screen and (max-width: 768px) {
-      footer .content p {
-        font-size: 0.8rem !important;
-      }
-    }
-
-    /* ===== TABLET (769px - 1023px) ===== */
-    @media screen and (min-width: 769px) and (max-width: 1023px) {
-      .publication-title {
-        font-size: 1.6rem !important;
-      }
-      .video-pair iframe {
-        height: 280px !important;
-      }
-      .arch-branch {
-        font-size: 0.85rem !important;
-      }
-      .dpaf-table {
-        font-size: 0.85rem !important;
-      }
+    .arch-caption {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 1rem;
+      font-style: italic;
     }
   </style>
 </head>
 <body>
 
-<!-- ===================== NAVBAR ===================== -->
+<!-- ══════════════════════ NAVBAR ══════════════════════ -->
 <nav class="navbar is-black" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
     </a>
   </div>
   <div class="navbar-menu">
@@ -307,17 +116,17 @@
   </div>
 </nav>
 
-<!-- ===================== HERO ===================== -->
+<!-- ══════════════════════ HERO ══════════════════════ -->
 <section class="hero dpaf-hero">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
 
-          <div class="venue-badge"> Expert Systems with Applications &nbsp;&middot;&nbsp; Elsevier &nbsp;&middot;&nbsp; 2026</div>
+          <div class="venue-badge">Expert Systems with Applications &nbsp;&middot;&nbsp; Elsevier &nbsp;&middot;&nbsp; 2026</div>
 
           <h1 class="title is-2 publication-title" style="margin-top:0.6rem;">
-            FreqSeg: A Physics-Informed Frequency-Decomposed Network for Fire and Smoke Instance Segmentation
+            PhysSeg: Physics-Informed Multi-Scale Pattern Encoding for Fire and Smoke Instance Segmentation
           </h1>
 
           <div class="is-size-5 publication-authors" style="margin-top:1rem;">
@@ -363,11 +172,11 @@
           </div>
 
           <div class="tldr-box">
-            FreqSeg introduces a <b>Frequency-Decomposed Encoder (FDE)</b> that applies class-specific multi-scale kernels
-            to separately capture high-frequency fire structure and low-frequency smoke diffusion, fuses them via an
-            <b>Adaptive Fusion Module (AFM)</b> with channel and spatial attention, and achieves
-            <b>40.2% AP at 17.2 FPS</b> on a new 7,917-image dual-class dataset &mdash;
-            the largest instance-level fire &amp; smoke benchmark to date.
+            <b>PhysSeg</b> is an end-to-end physics-informed instance segmentation framework that unifies a
+            <b>Multi-Scale Pattern Encoder (MSPE)</b> — applying class-specific small-scale kernels (3×3) for
+            fire's sharp boundaries and large-scale kernels (5×5, 7×7) for smoke's diffuse gradients — with an
+            <b>Adaptive Fusion Module (AFM)</b> via pixel-wise spatial attention, achieving
+            <b>40.2% AP at 17.2 FPS</b> on a new 7,917-image dual-class benchmark.
           </div>
 
         </div>
@@ -376,7 +185,7 @@
   </div>
 </section>
 
-<!-- ===================== ABSTRACT ===================== -->
+<!-- ══════════════════════ ABSTRACT ══════════════════════ -->
 <section class="section" id="abstract">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
@@ -384,26 +193,30 @@
         <h2 class="title is-3 section-heading">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Fire and smoke detection in real-world environments poses significant challenges for instance segmentation due
-            to the physically distinct appearance of the two hazard classes: fire exhibits sharp, high-frequency boundary
-            patterns driven by combustion dynamics, whereas smoke manifests as diffuse, low-frequency gradients that vary
-            with atmospheric conditions, scale, and scene illumination. Existing methods apply uniform feature extraction
-            to both classes, failing to exploit these frequency-domain differences and consequently producing imprecise
-            instance masks under complex real-world conditions. To address these limitations, we propose
-            <b>FreqSeg</b>, a physics-informed frequency decomposition network that introduces two complementary
-            components: a <b>Frequency-Decomposed Encoder (FDE)</b>, which applies class-specific multi-scale
-            convolution kernels to independently capture the high-frequency spatial structure of fire and the
-            low-frequency diffusion patterns of smoke, and an <b>Adaptive Fusion Module (AFM)</b>, which dynamically
-            recalibrates and integrates the resulting dual-pattern features through channel and spatial attention.
-            To support training and evaluation, we introduce a large-scale dual-class instance segmentation dataset
-            comprising <b>7,917 polygon-annotated images</b> spanning indoor, outdoor, nighttime, daytime, and UAV
-            perspectives, representing the most comprehensive benchmark for fire and smoke instance segmentation to
-            date. Extensive experiments demonstrate that FreqSeg achieves <b>40.2% mask AP</b>, surpassing PointRend
-            by +5.2%, Mask2Former by +5.4%, and CondInst by +6.0%, while operating at <b>17.2 FPS</b>. Furthermore,
-            zero-shot cross-dataset evaluation on three external benchmarks yields a mean AP of 34.4%, outperforming
-            all five state-of-the-art competitors including Mask2Former with a stronger Swin-Tiny backbone by +2.3%,
-            confirming that physics-informed dual-pattern encoding produces transferable representations that generalise
-            reliably to unseen fire and smoke domains.
+            Fire and smoke incidents pose serious threats to human life, critical infrastructure,
+            and ecosystems, creating an urgent need for accurate and timely detection systems.
+            Existing methods face major challenges in instance segmentation due to the distinct
+            visual characteristics of the two hazard classes: fire exhibits sharp boundaries driven
+            by combustion dynamics, whereas smoke presents diffuse, gradually varying patterns
+            influenced by atmospheric conditions, scale, and illumination. Current approaches employ
+            uniform feature extraction for both classes, failing to exploit these physical differences
+            and consequently producing inaccurate instance masks in complex real-world scenarios.
+            To address these limitations, we propose <b>PhysSeg</b>, a physics-informed multi-scale
+            pattern segmentation network comprising two complementary components: a
+            <b>Multi-Scale Pattern Encoder (MSPE)</b>, which applies class-specific convolution kernels
+            to independently capture fire's sharp boundary structure and smoke's diffuse spatial
+            gradients, and an <b>Adaptive Fusion Module (AFM)</b>, which dynamically integrates the
+            dual-pattern features through spatial attention. We further introduce a large-scale
+            dual-class dataset of <b>7,917 polygon-annotated images</b> spanning indoor, outdoor,
+            daytime, nighttime, and unmanned aerial vehicle (UAV) environments, establishing a
+            comprehensive benchmark for fire and smoke instance segmentation. Experimental results
+            demonstrate that PhysSeg achieves <b>40.2% mask average precision (AP)</b>, outperforming
+            PointRend by +5.2%, Mask2Former by +5.4%, and CondInst by +6.0%, while maintaining
+            <b>17.2 frames per second (FPS)</b>. Zero-shot evaluation on three external benchmarks
+            achieves <b>34.4% mean AP</b>, exceeding all five competing methods including Mask2Former
+            with a Swin-Tiny backbone by +2.3%, confirming robust generalisation to unseen fire and
+            smoke domains. Code and dataset are available at
+            <a href="https://ayazkhan789.github.io/FreqSeg/" target="_blank">https://ayazkhan789.github.io/FreqSeg/</a>.
           </p>
         </div>
       </div>
@@ -411,7 +224,7 @@
   </div>
 </section>
 
-<!-- ===================== HIGHLIGHTS ===================== -->
+<!-- ══════════════════════ HIGHLIGHTS ══════════════════════ -->
 <section class="section dpaf-dark-section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered" style="color:#fff;">Highlights</h2>
@@ -419,15 +232,15 @@
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-fire"></i></div>
-          <h4>Frequency-Decomposed Encoder</h4>
-          <p>Applies class-specific multi-scale kernels to independently capture high-frequency fire structure and low-frequency smoke diffusion patterns across all FPN levels.</p>
+          <h4>Multi-Scale Pattern Encoder</h4>
+          <p>Class-specific small-scale kernels (3×3) for fire's sharp boundaries and large-scale kernels (5×5, 7×7) for smoke's diffuse gradients — applied across all FPN levels.</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-layer-group"></i></div>
           <h4>Adaptive Fusion Module</h4>
-          <p>Dynamically recalibrates and integrates dual-pattern features through channel and spatial attention for superior instance-level discrimination.</p>
+          <p>Pixel-wise softmax-normalized spatial attention weights dynamically integrate complementary fire and smoke features for precise instance-level discrimination.</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
@@ -439,83 +252,71 @@
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
-          <div class="highlight-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+          <div class="highlight-icon"><i class="fas fa-atom"></i></div>
           <h4>Physics-Informed Design</h4>
-          <p>Frequency-domain decomposition guided by the physical properties of fire (combustion dynamics) and smoke (atmospheric diffusion) for principled feature separation.</p>
+          <p>Kernel scale selection guided by the physical properties of fire (combustion dynamics, sharp edges) and smoke (atmospheric diffusion, gradual gradients).</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-database"></i></div>
           <h4>7,917-Image Dataset</h4>
-          <p>Largest dual-class instance segmentation dataset for fire &amp; smoke with polygon-level annotations.</p>
+          <p>First large-scale dual-class instance segmentation benchmark for fire and smoke with polygon-level annotations across indoor, outdoor, daytime, nighttime, and UAV scenes.</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-search"></i></div>
-          <h4>Zero-Shot Generalization</h4>
-          <p>Mean AP of 34.4% on three unseen external benchmarks &mdash; outperforming all five state-of-the-art competitors without any fine-tuning.</p>
+          <h4>Zero-Shot Generalisation</h4>
+          <p>34.4% mean AP on three unseen external benchmarks — outperforming all five state-of-the-art competitors without any fine-tuning.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== ARCHITECTURE ===================== -->
+<!-- ══════════════════════ ARCHITECTURE ══════════════════════ -->
 <section class="section" id="architecture">
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered">Architecture</h2>
 
-    <div class="arch-pipeline">
-      <div class="arch-block arch-block-input">Input Image</div>
-      <div class="arch-arrow">&#9660;</div>
-      <div class="arch-block arch-block-backbone">DCNv2-Enhanced ResNet-50<br><small>Stages 2&ndash;4: Deformable Convolution</small></div>
-      <div class="arch-arrow">&#9660; {C2, C3, C4, C5}</div>
-      <div class="arch-block arch-block-fpn">Feature Pyramid Network (FPN)<br><small>5 levels P2&ndash;P6 &middot; 256 channels each</small></div>
-      <div class="arch-arrow">&#9660;</div>
-      <div class="arch-split">
-        <div class="arch-branch arch-branch-fire">
-          <div class="arch-branch-label">Fire Branch</div>
-          Small-kernel convolutions<br><small>High-freq textures &amp; sharp boundaries</small>
-        </div>
-        <div class="arch-branch-label-mid">FDE</div>
-        <div class="arch-branch arch-branch-smoke">
-          <div class="arch-branch-label">Smoke Branch</div>
-          Large-kernel convolutions<br><small>Low-freq diffuse &amp; gradient patterns</small>
-        </div>
-      </div>
-      <div class="arch-arrow">&#9660;</div>
-      <div class="arch-block arch-block-afm">Adaptive Fusion Module (AFM)<br><small>Channel &amp; Spatial Attention &middot; Dynamic Recalibration</small></div>
-      <div class="arch-arrow">&#9660;</div>
-      <div class="arch-block arch-block-head">CondInst Dynamic Mask Head<br><small>169 dynamic parameters per instance</small></div>
-      <div class="arch-arrow">&#9660;</div>
-      <div class="arch-block arch-block-output">Instance Masks</div>
+    <!-- Architecture image replacing the pipeline diagram -->
+    <div class="arch-image-wrapper">
+      <img src="https://drive.google.com/thumbnail?id=1k4InrVEDIRFSnGteLd39bHtIlPo_dKsh&sz=w1200"
+           alt="PhysSeg overall architecture diagram">
     </div>
+    <p class="arch-caption">
+      Overall architecture of PhysSeg. The framework comprises a DCNv2-enhanced ResNet-50 backbone,
+      Feature Pyramid Network (FPN), Multi-Scale Pattern Encoder (MSPE) with parallel fire and smoke
+      branches, Adaptive Fusion Module (AFM) with spatial attention, and CondInst dynamic mask head.
+    </p>
 
     <div class="content has-text-justified" style="margin-top:2rem;">
       <p>
-        The <b>Frequency-Decomposed Encoder (FDE)</b> processes FPN features through two parallel branches: a fire branch
-        employing small-kernel convolutions to capture high-frequency textures and sharp combustion boundaries, and a smoke branch
-        using large-kernel convolutions to model low-frequency, diffuse, and semi-transparent gradient patterns.
-        Both branches independently extract class-specific representations guided by the physical frequency characteristics of each hazard.
+        The <b>Multi-Scale Pattern Encoder (MSPE)</b> processes FPN features through two parallel
+        branches: a fire branch employing small-scale kernels (3×3) to capture sharp combustion
+        boundaries and high-contrast textures, and a smoke branch using large-scale kernels (5×5, 7×7)
+        to model low-frequency, diffuse, and semi-transparent gradient patterns. Both branches
+        independently extract class-specific representations guided by the distinct physical properties
+        of each hazard class.
       </p>
       <p>
-        The <b>Adaptive Fusion Module (AFM)</b> dynamically recalibrates and integrates the resulting dual-pattern features
-        through channel and spatial attention, enabling the network to emphasize the most informative frequency patterns
-        at each spatial location &mdash; particularly effective in scenes where fire and smoke coexist or overlap.
+        The <b>Adaptive Fusion Module (AFM)</b> generates pixel-wise softmax-normalized spatial
+        attention weights to dynamically integrate complementary fire and smoke features, enabling the
+        network to emphasize the most discriminative pattern at each spatial location — particularly
+        effective in scenes where fire and smoke coexist, overlap, or transition across boundaries.
       </p>
     </div>
   </div>
 </section>
 
-<!-- ===================== DATASET ===================== -->
+<!-- ══════════════════════ DATASET ══════════════════════ -->
 <section class="section dpaf-dark-section" id="dataset">
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered" style="color:#fff;">Dataset Overview</h2>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:2rem;">
       7,917 images &middot; Dual-class instance annotations (fire + smoke) &middot; Polygon masks &middot;
-      Indoor / Outdoor / Industrial / Wildfire / Vehicle scenes
+      Indoor / Outdoor / Industrial / Wildfire / Vehicle / UAV scenes
     </p>
 
     <div class="columns is-centered dataset-stats">
@@ -537,18 +338,16 @@
       </div>
     </div>
 
-    <!-- Dataset Overview Image -->
     <div class="columns is-centered" style="margin-top:1.5rem;">
       <div class="column is-full">
         <figure class="image dataset-figure">
-          <img src=" https://drive.google.com/thumbnail?id=1jS5NvpZcEt3ou2G31IGPaDF8DeCzB9lT&sz=w1200"
+          <img src="https://drive.google.com/thumbnail?id=1jS5NvpZcEt3ou2G31IGPaDF8DeCzB9lT&sz=w1200"
                alt="Dataset overview across different conditions">
-          <figcaption>Dataset overview &mdash; diverse conditions across all scene categories</figcaption>
+          <figcaption>Dataset overview — diverse conditions across all scene categories</figcaption>
         </figure>
       </div>
     </div>
 
-    <!-- Dataset Comparison Table -->
     <h3 class="title is-5 has-text-centered" style="margin-top:2.5rem; color:#fff;">Dataset Comparison</h3>
     <div class="table-container" style="margin-top:1rem;">
       <table class="table is-striped is-hoverable is-fullwidth dpaf-table">
@@ -561,259 +360,199 @@
           <tr><td>SMOKE5K</td><td>5,400</td><td></td><td>&#10003;</td><td>Binary</td><td>Semantic</td><td>2022</td></tr>
           <tr><td>FSSD</td><td>1,968</td><td>&#10003;</td><td>&#10003;</td><td>Binary</td><td>Semantic</td><td>2023</td></tr>
           <tr><td>FLAME</td><td>2,003</td><td>&#10003;</td><td></td><td>Binary</td><td>Semantic</td><td>2023</td></tr>
-          <tr><td>IoT-Fire</td><td>11,000</td><td>&#10003;</td><td></td><td>Binary</td><td>Semantic</td><td>2023</td></tr>
+          <tr><td>IoT-Fire</td><td>1,100</td><td>&#10003;</td><td></td><td>Binary</td><td>Semantic</td><td>2023</td></tr>
           <tr class="dpaf-best-row">
-            <td><b>Ours (FreqSeg)</b></td><td><b>7,917</b></td><td><b>&#10003;</b></td><td><b>&#10003;</b></td>
+            <td><b>Ours (PhysSeg)</b></td><td><b>7,917</b></td><td><b>&#10003;</b></td><td><b>&#10003;</b></td>
             <td><b>Polygon</b></td><td><b>Instance</b></td><td><b>2026</b></td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Visual Results on Different Conditions -->
     <h3 class="title is-5 has-text-centered" style="margin-top:2.5rem; color:#fff;">
-      FreqSeg Visual Results &mdash; Diverse Conditions &amp; Scenarios
+      PhysSeg Visual Results — Diverse Conditions &amp; Scenarios
     </h3>
-    <p class="has-text-centered" style="color:#ccc; margin-bottom:1.5rem; font-size:0.95rem;">
-      Our model predictions across industrial, indoor, wildfire, vehicle, and complex scenes
+    <p class="has-text-centered" style="color:#ccc; margin-bottom:1.5rem; font-size:.95rem;">
+      Model predictions across industrial, indoor, wildfire, vehicle, and complex scenes
     </p>
 
     <div class="columns is-multiline is-centered">
-
       <div class="column is-half">
         <figure class="image dataset-figure">
-          <img src="https://drive.google.com/thumbnail?id=1EbwmcAUjlLOpsGz8PV178qmkdPBZqSi3&sz=w1200"
-               alt="Industrial fire scenes">
+          <img src="https://drive.google.com/thumbnail?id=1EbwmcAUjlLOpsGz8PV178qmkdPBZqSi3&sz=w1200" alt="Industrial fire scenes">
           <figcaption>🏭 Industrial fire scenes</figcaption>
         </figure>
       </div>
-
       <div class="column is-half">
         <figure class="image dataset-figure">
-          <img src="https://drive.google.com/thumbnail?id=1yYKarxoqIFniEBHn7BEP3GkLkZp4oHOt&sz=w1200"
-               alt="Indoor house fire">
+          <img src="https://drive.google.com/thumbnail?id=1yYKarxoqIFniEBHn7BEP3GkLkZp4oHOt&sz=w1200" alt="Indoor house fire">
           <figcaption>🏠 Indoor / house fire</figcaption>
         </figure>
       </div>
-
       <div class="column is-half">
         <figure class="image dataset-figure">
-          <img src="https://drive.google.com/thumbnail?id=1NdDyI5ds8Y8lmVSxuupScsxZlQphO26Q&sz=w1200"
-               alt="Forest wildfire">
+          <img src="https://drive.google.com/thumbnail?id=1NdDyI5ds8Y8lmVSxuupScsxZlQphO26Q&sz=w1200" alt="Forest wildfire">
           <figcaption>🌲 Forest &amp; wildfire</figcaption>
         </figure>
       </div>
-
       <div class="column is-half">
         <figure class="image dataset-figure">
-          <img src="https://drive.google.com/thumbnail?id=1VisvP78cITUSl95TjRJtV0YXqMAokwBs&sz=w1200"
-               alt="Fire on vehicles">
+          <img src="https://drive.google.com/thumbnail?id=1VisvP78cITUSl95TjRJtV0YXqMAokwBs&sz=w1200" alt="Vehicle fire">
           <figcaption>🚗 Vehicle fire</figcaption>
         </figure>
       </div>
-
       <div class="column is-full">
         <figure class="image dataset-figure">
-          <img src="https://drive.google.com/thumbnail?id=12On3WOSKSP_Q9Zw_R21715tRB_wwMfPp&sz=w1200"
-               alt="Complex and ambiguous scenes">
+          <img src="https://drive.google.com/thumbnail?id=12On3WOSKSP_Q9Zw_R21715tRB_wwMfPp&sz=w1200" alt="Complex scenes">
           <figcaption>⚠️ Complex &amp; visually ambiguous scenes — overlapping fire/smoke, background clutter, extreme lighting</figcaption>
         </figure>
       </div>
-
     </div>
-
   </div>
 </section>
 
-<!-- ===================== Comparison with Competing Methods ===================== -->
+<!-- ══════════════════════ RESULTS ══════════════════════ -->
 <section class="section" id="results">
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered">Comparison with Competing Methods</h2>
-
     <div class="columns is-multiline is-centered">
-
       <div class="column is-full">
         <figure class="image result-figure">
           <img src="https://drive.google.com/thumbnail?id=1UteYpV_VMKGYmOolBqS63GsE8D5XVKqZ&sz=w1200"
-     alt="FreqSeg predictions vs ground truth (fire)">
-          <figcaption>FreqSeg achieves superior boundary precision and complete instance
-coverage across scales for fire and smoke.</figcaption>
+               alt="PhysSeg predictions vs ground truth">
+          <figcaption>PhysSeg achieves superior boundary precision and complete instance coverage across scales for both fire and smoke.</figcaption>
         </figure>
       </div>
-
-     <div class="column is-full">
-  <figure class="image result-figure">
-    <img src="https://drive.google.com/thumbnail?id=17tIokV0xO-Hz1zlPEc_em3Q_T2a-dMZV&sz=w1200"
-         alt="Comparison with state-of-the-art methods">
-    <figcaption>
-      Zero-shot generalization across five datasets (BowFire, BA-UAV, FESB, MLID, IoT-Fire) without
-      fine-tuning, showing robustness to diverse conditions and scales.
-    </figcaption>
-  </figure>
-</div>
-
+      <div class="column is-full">
+        <figure class="image result-figure">
+          <img src="https://drive.google.com/thumbnail?id=17tIokV0xO-Hz1zlPEc_em3Q_T2a-dMZV&sz=w1200"
+               alt="Zero-shot generalization results">
+          <figcaption>Zero-shot generalisation across five datasets (BowFire, BA-UAV, FESB, MLID, IoT-Fire) without fine-tuning.</figcaption>
+        </figure>
+      </div>
       <div class="column is-half">
         <figure class="image result-figure">
           <img src="https://drive.google.com/thumbnail?id=1R-QkcBdAWIo1o061uMhPST6SHVBiaJcI&sz=w1200"
-               alt="All models on full dataset">
-          <figcaption>FreqSeg predictions vs. ground truth &mdash; fire instances. Our model accurately delineates individual flame regions under varying scale, illumination, and background complexity</figcaption>
+               alt="Fire instance predictions">
+          <figcaption>PhysSeg predictions vs. ground truth — fire instances across varying scale and illumination.</figcaption>
         </figure>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ===================== VIDEO DEMO ===================== -->
+<!-- ══════════════════════ VIDEO DEMO ══════════════════════ -->
 <section class="section dpaf-dark-section" id="videos">
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered" style="color:#fff;">Video Demos</h2>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:2rem;">
-      Input video (left) &nbsp;vs.&nbsp; FreqSeg segmentation output (right)
+      Input video (left) &nbsp;vs.&nbsp; PhysSeg segmentation output (right)
     </p>
-
     <div id="video-carousel" class="carousel results-carousel">
-
-      <!-- Pair 1 -->
       <div class="item">
         <div class="columns is-gapless video-pair">
-          <div class="column">
-            <p class="video-label">Input</p>
-            <iframe src="https://drive.google.com/file/d/1H67CBhLJUdM2NujBU7uF7ym9lgc0iWek/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label">Input</p>
+            <iframe src="https://drive.google.com/file/d/1H67CBhLJUdM2NujBU7uF7ym9lgc0iWek/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column">
-            <p class="video-label output-label">FreqSeg Output</p>
-            <iframe src="https://drive.google.com/file/d/1SMHOK1KwDKlFXVXgePYpN8eOcZw7M2t6/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+            <iframe src="https://drive.google.com/file/d/1SMHOK1KwDKlFXVXgePYpN8eOcZw7M2t6/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
       </div>
-
-      <!-- Pair 2 -->
       <div class="item">
         <div class="columns is-gapless video-pair">
-          <div class="column">
-            <p class="video-label">Input</p>
-            <iframe src="https://drive.google.com/file/d/1FNMepuzSQHO34siBM6iXlgcsc7NENdtW/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label">Input</p>
+            <iframe src="https://drive.google.com/file/d/1FNMepuzSQHO34siBM6iXlgcsc7NENdtW/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column">
-            <p class="video-label output-label">FreqSeg Output</p>
-            <iframe src="https://drive.google.com/file/d/16hh5PfnkpB1hGNFOMEkmbBH5ZRHhPeWh/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+            <iframe src="https://drive.google.com/file/d/16hh5PfnkpB1hGNFOMEkmbBH5ZRHhPeWh/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
       </div>
-
-      <!-- Pair 3 -->
       <div class="item">
         <div class="columns is-gapless video-pair">
-          <div class="column">
-            <p class="video-label">Input</p>
-            <iframe src="https://drive.google.com/file/d/174fxN1vrrpIMOAi8fq8Fsa5fdMUwoRoS/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label">Input</p>
+            <iframe src="https://drive.google.com/file/d/174fxN1vrrpIMOAi8fq8Fsa5fdMUwoRoS/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column">
-            <p class="video-label output-label">FreqSeg Output</p>
-            <iframe src="https://drive.google.com/file/d/1_Flg3KBc33vS6and6uVEAdM0k2kS1gMG/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+            <iframe src="https://drive.google.com/file/d/1_Flg3KBc33vS6and6uVEAdM0k2kS1gMG/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
       </div>
-
-      <!-- Pair 4 -->
       <div class="item">
         <div class="columns is-gapless video-pair">
-          <div class="column">
-            <p class="video-label">Input</p>
-            <iframe src="https://drive.google.com/file/d/1HAS2JarJBTMqANe8n7Kf5ev7jJYY5h-N/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label">Input</p>
+            <iframe src="https://drive.google.com/file/d/1HAS2JarJBTMqANe8n7Kf5ev7jJYY5h-N/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column">
-            <p class="video-label output-label">FreqSeg Output</p>
-            <iframe src="https://drive.google.com/file/d/1p-Voctv8D9DXPym2RUCBN7TlpqYsaZb6/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+            <iframe src="https://drive.google.com/file/d/1p-Voctv8D9DXPym2RUCBN7TlpqYsaZb6/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
       </div>
-
-         
-
-      <!-- Pair 7 -->
       <div class="item">
         <div class="columns is-gapless video-pair">
-          <div class="column">
-            <p class="video-label">Input</p>
-            <iframe src="https://drive.google.com/file/d/1Ggn0IzlP61JUQzXyDMZfT-6FhzUlYp5I/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label">Input</p>
+            <iframe src="https://drive.google.com/file/d/1Ggn0IzlP61JUQzXyDMZfT-6FhzUlYp5I/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column">
-            <p class="video-label output-label">FreqSeg Output</p>
-            <iframe src="https://drive.google.com/file/d/1buoWPnW89iB2EfP4CgJgXc-lT4HdmtJl/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+            <iframe src="https://drive.google.com/file/d/1buoWPnW89iB2EfP4CgJgXc-lT4HdmtJl/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
       </div>
-
-      <!-- Pair 8 -->
       <div class="item">
         <div class="columns is-gapless video-pair">
-          <div class="column">
-            <p class="video-label">Input</p>
-            <iframe src="https://drive.google.com/file/d/1z2dwUO7zbzcymxydWhVfGliDAUl0W16y/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label">Input</p>
+            <iframe src="https://drive.google.com/file/d/1z2dwUO7zbzcymxydWhVfGliDAUl0W16y/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column">
-            <p class="video-label output-label">FreqSeg Output</p>
-            <iframe src="https://drive.google.com/file/d/1QSC6svdXSDsGjznxOAvRC4_uwWy9OMe0/preview"
-              width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+            <iframe src="https://drive.google.com/file/d/1QSC6svdXSDsGjznxOAvRC4_uwWy9OMe0/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-
-
-<!-- ===================== CITATION ===================== -->
+<!-- ══════════════════════ CITATION ══════════════════════ -->
 <section class="section dpaf-dark-section" id="citation">
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered" style="color:#fff;">Citation</h2>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:1.5rem;">If you find this work useful, please cite:</p>
     <div class="bibtex-box">
-      <pre><code>@article{ayaz2026freqseg,
-  title   = {FreqSeg: A Physics-Informed Frequency-Decomposed Network for Fire and Smoke Instance Segmentation},
+      <pre><code>@article{ayaz2026physseg,
+  title   = {PhysSeg: Physics-Informed Multi-Scale Pattern Encoding
+             for Fire and Smoke Instance Segmentation},
   author  = {Ayaz, Muhammad and Amin, Sareer ul and Yar, Hikmat
              and Khan, Salman and Shin, Wonseop and Seo, Sanghyun},
- 
-</code></pre>
+  journal = {Expert Systems with Applications},
+  year    = {2026},
+  publisher = {Elsevier}
+}</code></pre>
     </div>
   </div>
 </section>
 
-<!-- ===================== FOOTER ===================== -->
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
 <footer class="footer" style="background:#111;">
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="content has-text-centered" style="color:#aaa;">
           <p>
-            <b style="color:#fff;">FreqSeg</b> &nbsp;&middot;&nbsp;  Expert Systems with Applications, Elsevier &nbsp;&middot;&nbsp; 2026<br>
+            <b style="color:#fff;">PhysSeg</b> &nbsp;&middot;&nbsp; Expert Systems with Applications, Elsevier &nbsp;&middot;&nbsp; 2026<br>
             Chung-Ang University &nbsp;|&nbsp; KAIST &nbsp;|&nbsp; Oxford Brookes University
           </p>
           <p>
             Page built using the
             <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" style="color:#e67e22;">
               Academic Project Page Template</a>.
-            Licensed under
-            <a rel="license" href="http://creativecommons.org/licens
+            Licensed under <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" style="color:#e67e22;">CC BY-SA 4.0</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
 
-
-
-
-
-
-
+</body>
+</html>
