@@ -1,1 +1,1 @@
-# Physics-Informed Multi-Scale Pattern Encoding for Fire and Smoke Segmentation
+# Dual-Branch Multi-Scale Pattern Encoding with Adaptive Fusion for Fire and Smoke Segmentation
