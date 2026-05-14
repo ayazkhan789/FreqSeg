@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="PhysSeg: Physics-Informed Multi-Scale Pattern Encoding for Fire and Smoke Instance Segmentation.">
-  <meta property="og:title" content="PhysSeg: Physics-Informed Multi-Scale Pattern Encoding for Fire and Smoke Instance Segmentation"/>
-  <meta property="og:description" content="An end-to-end physics-informed instance segmentation framework using a Multi-Scale Pattern Encoder and Adaptive Fusion Module, achieving 40.2% AP at 17.2 FPS."/>
+  <meta name="description" content="DBSeg: Dual-Branch Multi-Scale Pattern Encoding with Adaptive Fusion for Fire and Smoke Instance Segmentation">
+  <meta property="og:title" content="DBSeg: Dual-Branch Multi-Scale Pattern Encoding with Adaptive Fusion for Fire and Smoke Instance Segmentation"/>
+  <meta property="og:description" content="An end-to-end dual-branch instance segmentation framework using a Multi-Scale Pattern Encoder and Adaptive Fusion Module, achieving 40.2% AP at 17.2 FPS."/>
   <meta property="og:image" content="https://drive.google.com/thumbnail?id=1au9M5lQ1Pcfl6VoqWJI_oiWzxQ-GAOpI&sz=w1200"/>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="keywords" content="fire detection, smoke detection, instance segmentation, deep learning, PhysSeg, multi-scale pattern encoding, adaptive fusion, physics-informed">
-  <title>PhysSeg: Fire &amp; Smoke Instance Segmentation</title>
+  <meta name="keywords" content="fire detection, smoke detection, instance segmentation, deep learning, DBSeg, multi-scale pattern encoding, adaptive fusion, dual-branch, physics-informed">
+  <title>DBSeg: Fire &amp; Smoke Instance Segmentation</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="static/css/bulma.min.css">
@@ -28,7 +28,6 @@
     * { box-sizing: border-box; }
     html, body { overflow-x: hidden; width: 100%; }
 
-    /* ── MOBILE ─────────────────────────────────────────────────── */
     @media screen and (max-width: 768px) {
       .navbar-menu { display:block!important; background:#111; padding:.5rem 0; }
       .navbar-start { flex-direction:column; }
@@ -67,7 +66,6 @@
       .dpaf-table { font-size:.85rem!important; }
     }
 
-    /* ── ARCHITECTURE IMAGE ────────────────────────────────────── */
     .arch-image-wrapper {
       border-radius: 12px;
       overflow: hidden;
@@ -75,11 +73,7 @@
       margin: 0 auto;
       max-width: 900px;
     }
-    .arch-image-wrapper img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+    .arch-image-wrapper img { width: 100%; height: auto; display: block; }
     .arch-caption {
       text-align: center;
       font-size: 0.9rem;
@@ -126,7 +120,7 @@
           <div class="venue-badge">Expert Systems with Applications &nbsp;&middot;&nbsp; Elsevier &nbsp;&middot;&nbsp; 2026</div>
 
           <h1 class="title is-2 publication-title" style="margin-top:0.6rem;">
-            PhysSeg: Physics-Informed Multi-Scale Pattern Encoding for Fire and Smoke Instance Segmentation
+            DBSeg: Dual-Branch Multi-Scale Pattern Encoding with Adaptive Fusion for Fire and Smoke Instance Segmentation
           </h1>
 
           <div class="is-size-5 publication-authors" style="margin-top:1rem;">
@@ -172,7 +166,7 @@
           </div>
 
           <div class="tldr-box">
-            <b>PhysSeg</b> is an end-to-end physics-informed instance segmentation framework that unifies a
+            <b>DBSeg</b> is an end-to-end dual-branch instance segmentation framework that unifies a
             <b>Multi-Scale Pattern Encoder (MSPE)</b> — applying class-specific small-scale kernels (3×3) for
             fire's sharp boundaries and large-scale kernels (5×5, 7×7) for smoke's diffuse gradients — with an
             <b>Adaptive Fusion Module (AFM)</b> via pixel-wise spatial attention, achieving
@@ -201,8 +195,8 @@
             influenced by atmospheric conditions, scale, and illumination. Current approaches employ
             uniform feature extraction for both classes, failing to exploit these physical differences
             and consequently producing inaccurate instance masks in complex real-world scenarios.
-            To address these limitations, we propose <b>PhysSeg</b>, a physics-informed multi-scale
-            pattern segmentation network comprising two complementary components: a
+            To address these limitations, we propose <b>DBSeg</b>, a dual-branch multi-scale pattern
+            segmentation network comprising two complementary components: a
             <b>Multi-Scale Pattern Encoder (MSPE)</b>, which applies class-specific convolution kernels
             to independently capture fire's sharp boundary structure and smoke's diffuse spatial
             gradients, and an <b>Adaptive Fusion Module (AFM)</b>, which dynamically integrates the
@@ -210,12 +204,12 @@
             dual-class dataset of <b>7,917 polygon-annotated images</b> spanning indoor, outdoor,
             daytime, nighttime, and unmanned aerial vehicle (UAV) environments, establishing a
             comprehensive benchmark for fire and smoke instance segmentation. Experimental results
-            demonstrate that PhysSeg achieves <b>40.2% mask average precision (AP)</b>, outperforming
+            demonstrate that DBSeg achieves <b>40.2% mask average precision (AP)</b>, outperforming
             PointRend by +5.2%, Mask2Former by +5.4%, and CondInst by +6.0%, while maintaining
             <b>17.2 frames per second (FPS)</b>. Zero-shot evaluation on three external benchmarks
             achieves <b>34.4% mean AP</b>, exceeding all five competing methods including Mask2Former
             with a Swin-Tiny backbone by +2.3%, confirming robust generalisation to unseen fire and
-            smoke domains. 
+            smoke domains.
           </p>
         </div>
       </div>
@@ -252,8 +246,8 @@
       <div class="column is-one-third-desktop is-half-tablet">
         <div class="highlight-card">
           <div class="highlight-icon"><i class="fas fa-atom"></i></div>
-          <h4>Physics-Informed Design</h4>
-          <p>Kernel scale selection guided by the physical properties of fire (combustion dynamics, sharp edges) and smoke (atmospheric diffusion, gradual gradients).</p>
+          <h4>Dual-Branch Design</h4>
+          <p>Parallel fire and smoke branches with class-specific kernel scales guided by the physical properties of each hazard class.</p>
         </div>
       </div>
       <div class="column is-one-third-desktop is-half-tablet">
@@ -278,22 +272,15 @@
 <section class="section" id="architecture">
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered">Architecture</h2>
-
-    <!-- Architecture image replacing the pipeline diagram -->
     <div class="arch-image-wrapper">
       <img src="https://drive.google.com/thumbnail?id=1k4InrVEDIRFSnGteLd39bHtIlPo_dKsh&sz=w1200"
-           alt="PhysSeg overall architecture diagram">
+           alt="DBSeg overall architecture diagram">
     </div>
     <p class="arch-caption">
-      Overall architecture of PhysSeg. The framework comprises a DCNv2-enhanced ResNet-50 backbone,
+      Overall architecture of DBSeg. The framework comprises a DCNv2-enhanced ResNet-50 backbone,
       Feature Pyramid Network (FPN), Multi-Scale Pattern Encoder (MSPE) with parallel fire and smoke
       branches, Adaptive Fusion Module (AFM) with spatial attention, and CondInst dynamic mask head.
     </p>
-
-    <div class="content has-text-justified" style="margin-top:2rem;">
-      
-
-    </div>
   </div>
 </section>
 
@@ -349,7 +336,7 @@
           <tr><td>FLAME</td><td>2,003</td><td>&#10003;</td><td></td><td>Binary</td><td>Semantic</td><td>2023</td></tr>
           <tr><td>IoT-Fire</td><td>1,100</td><td>&#10003;</td><td></td><td>Binary</td><td>Semantic</td><td>2023</td></tr>
           <tr class="dpaf-best-row">
-            <td><b>Ours (PhysSeg)</b></td><td><b>7,917</b></td><td><b>&#10003;</b></td><td><b>&#10003;</b></td>
+            <td><b>Ours (DBSeg)</b></td><td><b>7,917</b></td><td><b>&#10003;</b></td><td><b>&#10003;</b></td>
             <td><b>Polygon</b></td><td><b>Instance</b></td><td><b>2026</b></td>
           </tr>
         </tbody>
@@ -357,7 +344,7 @@
     </div>
 
     <h3 class="title is-5 has-text-centered" style="margin-top:2.5rem; color:#fff;">
-      PhysSeg Visual Results — Diverse Conditions &amp; Scenarios
+      DBSeg Visual Results — Diverse Conditions &amp; Scenarios
     </h3>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:1.5rem; font-size:.95rem;">
       Model predictions across industrial, indoor, wildfire, vehicle, and complex scenes
@@ -405,9 +392,9 @@
     <div class="columns is-multiline is-centered">
       <div class="column is-full">
         <figure class="image result-figure">
-         <img src="https://drive.google.com/thumbnail?id=1ui7Lh5enuZhJnXU_ICvCOklQo4Euz1FO&sz=w1200"
-               alt="PhysSeg predictions vs ground truth">
-          <figcaption>PhysSeg achieves superior boundary precision and complete instance coverage across scales for both fire and smoke.</figcaption>
+          <img src="https://drive.google.com/thumbnail?id=1ui7Lh5enuZhJnXU_ICvCOklQo4Euz1FO&sz=w1200"
+               alt="DBSeg predictions vs ground truth">
+          <figcaption>DBSeg achieves superior boundary precision and complete instance coverage across scales for both fire and smoke.</figcaption>
         </figure>
       </div>
       <div class="column is-full">
@@ -421,7 +408,7 @@
         <figure class="image result-figure">
           <img src="https://drive.google.com/thumbnail?id=1R-QkcBdAWIo1o061uMhPST6SHVBiaJcI&sz=w1200"
                alt="Fire instance predictions">
-          <figcaption>PhysSeg predictions vs. ground truth — fire instances across varying scale and illumination.</figcaption>
+          <figcaption>DBSeg predictions vs. ground truth — fire instances across varying scale and illumination.</figcaption>
         </figure>
       </div>
     </div>
@@ -433,7 +420,7 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3 section-heading has-text-centered" style="color:#fff;">Video Demos</h2>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:2rem;">
-      Input video (left) &nbsp;vs.&nbsp; PhysSeg segmentation output (right)
+      Input video (left) &nbsp;vs.&nbsp; DBSeg segmentation output (right)
     </p>
     <div id="video-carousel" class="carousel results-carousel">
       <div class="item">
@@ -441,7 +428,7 @@
           <div class="column"><p class="video-label">Input</p>
             <iframe src="https://drive.google.com/file/d/1H67CBhLJUdM2NujBU7uF7ym9lgc0iWek/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+          <div class="column"><p class="video-label output-label">DBSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1SMHOK1KwDKlFXVXgePYpN8eOcZw7M2t6/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
@@ -451,7 +438,7 @@
           <div class="column"><p class="video-label">Input</p>
             <iframe src="https://drive.google.com/file/d/1FNMepuzSQHO34siBM6iXlgcsc7NENdtW/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+          <div class="column"><p class="video-label output-label">DBSeg Output</p>
             <iframe src="https://drive.google.com/file/d/16hh5PfnkpB1hGNFOMEkmbBH5ZRHhPeWh/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
@@ -461,7 +448,7 @@
           <div class="column"><p class="video-label">Input</p>
             <iframe src="https://drive.google.com/file/d/174fxN1vrrpIMOAi8fq8Fsa5fdMUwoRoS/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+          <div class="column"><p class="video-label output-label">DBSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1_Flg3KBc33vS6and6uVEAdM0k2kS1gMG/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
@@ -471,8 +458,8 @@
           <div class="column"><p class="video-label">Input</p>
             <iframe src="https://drive.google.com/file/d/1HAS2JarJBTMqANe8n7Kf5ev7jJYY5h-N/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
-            <iframe src="https://drive.google.com/file/d/1p-Voctv8D9DXPym2RUCBN7TlpqYsaZb6/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
+          <div class="column"><p class="video-label output-label">DBSeg Output</p>
+            <iframe src="https://drive.google.com/file/d/1p-Voctv8D9DXPum2RUCBN7TlpqYsaZb6/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
       </div>
@@ -481,7 +468,7 @@
           <div class="column"><p class="video-label">Input</p>
             <iframe src="https://drive.google.com/file/d/1Ggn0IzlP61JUQzXyDMZfT-6FhzUlYp5I/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+          <div class="column"><p class="video-label output-label">DBSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1buoWPnW89iB2EfP4CgJgXc-lT4HdmtJl/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
@@ -491,7 +478,7 @@
           <div class="column"><p class="video-label">Input</p>
             <iframe src="https://drive.google.com/file/d/1z2dwUO7zbzcymxydWhVfGliDAUl0W16y/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
-          <div class="column"><p class="video-label output-label">PhysSeg Output</p>
+          <div class="column"><p class="video-label output-label">DBSeg Output</p>
             <iframe src="https://drive.google.com/file/d/1QSC6svdXSDsGjznxOAvRC4_uwWy9OMe0/preview" width="100%" height="360" allow="autoplay" style="border:none;"></iframe>
           </div>
         </div>
@@ -506,11 +493,12 @@
     <h2 class="title is-3 section-heading has-text-centered" style="color:#fff;">Citation</h2>
     <p class="has-text-centered" style="color:#ccc; margin-bottom:1.5rem;">If you find this work useful, please cite:</p>
     <div class="bibtex-box">
-      <pre><code>@article{ayaz2026physseg,
-  title   = {PhysSeg: Physics-Informed Multi-Scale Pattern Encoding
-             for Fire and Smoke Instance Segmentation},
+      <pre><code>@article{ayaz2026dbseg,
+  title   = {DBSeg: Dual-Branch Multi-Scale Pattern Encoding
+             with Adaptive Fusion for Fire and Smoke
+             Instance Segmentation},
   author  = {Ayaz, Muhammad and Amin, Sareer ul and Yar, Hikmat
-             and Khan, Salman and Shin, Wonseop and Seo, Sanghyun},
+             and Khan, Salman and Jung, Yonghoon and Seo, Sanghyun},
   journal = {Expert Systems with Applications},
   year    = {2026},
   publisher = {Elsevier}
@@ -526,7 +514,7 @@
       <div class="column is-8">
         <div class="content has-text-centered" style="color:#aaa;">
           <p>
-            <b style="color:#fff;">PhysSeg</b> &nbsp;&middot;&nbsp; Expert Systems with Applications, Elsevier &nbsp;&middot;&nbsp; 2026<br>
+            <b style="color:#fff;">DBSeg</b> &nbsp;&middot;&nbsp; Expert Systems with Applications, Elsevier &nbsp;&middot;&nbsp; 2026<br>
             Chung-Ang University &nbsp;|&nbsp; KAIST &nbsp;|&nbsp; Oxford Brookes University
           </p>
           <p>
